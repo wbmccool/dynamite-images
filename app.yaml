@@ -42,7 +42,6 @@ handlers:
   static_files: \1
   upload: (.*\.js)
 
-
 - url: /(.*\.css)
   mime_type: text/css
   static_files: \1
