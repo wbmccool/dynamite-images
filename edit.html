@@ -1,0 +1,177 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Edit Image</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+  <body>
+      <div id="main">
+          <div class="flex-container">
+              <div class="image-preview">
+                <div id="preview"></div>
+                <a target="_blank" id="output-link">Preview Link to This Image (TWIG tags encoded) <span class="glyphicon glyphicon-new-window"></span></a>
+
+                  <div class="row output-row">
+                    <div class="form-group">
+                    <label for="output">Output Code<span class="small">(w/ TWIG tags left unencoded)</span></label>
+                    <textarea id="output" type="text" class="form-control" placeholder="Don't delete the stuff here, it's generated programatically!" rows="4" title="This version is suitable to copy and paste into the BSD mailer: TWIG or other customization tags are left unencoded so that they can be processed/personalized."></textarea>
+                  </div>
+                <div id="data"></div>
+            </div>
+              </div>
+              <div class="control-panel controls" id="control-section">
+                <div class="panel panel-default">
+                <div class="panel-heading">
+                  <ul class="nav nav-pills" id="layers">
+                    <li role="presentation" id="new-layer" title="Clone the current layer"><a>+</a></li>
+                  </ul>
+                </div>
+                <div class="input-group input-group-sm panel-body">
+          <div class="form-elements">
+            <form>
+            <div class="row">
+              <div class="form-group">
+                <label for="text">Text</label>
+                <textarea id="text" name="text" type="text" class="form-control" rows="2" placeholder="Enter text">Your Text Here</textarea>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group third">
+               <label for="left">X Offset</label>
+               <span class="input-group">
+                <input id="left" name="left" type="number" class="form-control input-sm" value="0">
+                <span class="input-group-addon clearer" title="Reset to 0"><i class="glyphicon glyphicon-remove"></i></span>
+               </span>
+              </div>
+              <div class="form-group third">
+               <label for="top">Y Offset</label>
+               <span class="input-group">
+                <input id="top" name="top" type="number" class="form-control input-sm" value="0">
+                <span class="input-group-addon clearer" title="Reset to font-size"><i class="glyphicon glyphicon-remove"></i></span>
+               </span>
+              </div>
+              <div class="form-group third">
+               <label for="font-size">Font Size</label>
+               <span class="input-group">
+               <input id="font-size" name="font-size" type="number" class="form-control input-sm" value="24">
+               <span class="input-group-addon clearer" title="Reset to 24"><i class="glyphicon glyphicon-remove"></i></span>
+               </span>
+              </div>
+            </div>
+
+            <div class="form-group experimental">
+               <label for="letter-spacing exp">Letter Spacing</label>
+               <span class="input-group">
+                 <input id="letter-spacing" name="letter-spacing" type="number" class="form-control input-sm tiny-field" value="">
+                 <span class="input-group-addon clearer"><i class="glyphicon glyphicon-remove"></i></span>
+               </span>
+            </div>
+
+            <div class="row">
+               <div class="form-group three-quarters">
+                 <label for="font-family">Font Family</label>
+                 <select id="font-family" name="font-family" class="form-control input-sm">
+
+                 </select>
+               </div>
+               <div class="form-group one-quarter">
+                 <label for="color">Color</label>
+                 <input id="color" name="color" type="color" class="form-control input-sm" value="#000000">
+               </div>
+               </div>
+               <div class="row">
+                 <div class="form-group third">
+                   <label for="text-transform">Capitalization</label>
+                   <select id="text-transform" name="text-transform" class="form-control input-sm">
+                       <option value="" selected>Normal</option>
+                       <option value="uppercase">Uppercase</option>
+                       <option value="capitalize">Capitalize</option>
+                   </select>
+                 </div>
+                 <div class="form-group third">
+                   <label for="text-align">X Alignment</label>
+                   <select id="text-align" name="text-align" class="form-control input-sm">
+                       <option value="" selected>Left</option>
+                       <option value="center">Center</option>
+                       <option value="right">Right</option>
+                   </select>
+                 </div>
+                 <div class="form-group third">
+                   <label for="vertical-align">Y Alignment</label>
+                   <select id="vertical-align" name="vertical-align" class="form-control input-sm">
+                       <option value="" selected>Top</option>
+                       <option value="middle">Middle</option>
+                       <option value="bottom">Bottom</option>
+                   </select>
+                 </div>
+               </div>
+               <div class="row">
+                 <div class="form-group third">
+                   <label for="white-space">White Space</label>
+                   <select id="white-space" name="white-space" class="form-control input-sm">
+                       <option value="" selected>nowrap</option>
+                       <option value="normal">wrap</option>
+                   </select>
+                 </div>
+                 <div class="form-group third">
+                   <label for="line-height">Line Height</label>
+                   <span class="input-group">
+                   <input id="line-height" title="Simulated spacing between lines when they wrap." name="line-height" type="number" step="0.1" class="form-control input-sm" value="1.5">
+                     <span class="input-group-addon clearer" title="Reset to 1.5"><i class="glyphicon glyphicon-remove"></i></span>
+                 </span>
+                 </div>
+                 <div class="form-group third">
+                   <label for="max-width" title="(0 = use image edges)">Max Width</label>
+                   <span class="input-group">
+                   <input id="max-width" title="Restricts the total size of the text block. Using 0 defaults to wrapping at the edges of the image." name="max-width" type="number" min="0" step="50" class="form-control input-sm" value="0">
+                      <span class="input-group-addon clearer" title="Reset to none (0)"><i class="glyphicon glyphicon-remove"></i></span>
+                 </span>
+                 </div>
+               </div>
+               <input type="hidden" name="text-shadow">
+               <input type="hidden" name="outline">
+
+                       </form>
+              <div class="row">
+               <div class="form-group ts-fields">
+                 <label>Text Shadow</label>
+                  <span class="input-group input-group-flex">
+                   <input id="ts-left" type="number" name="ts-left" title="Left Offset" class="form-control tiny-field input-sm" value="0">
+                   <input id="ts-top" title="Top Offset" name="ts-top" type="number" class="form-control tiny-field input-sm" value="0">
+                   <input title="Color" id="ts-color" name="ts-color" type="color" class="form-control tiny-field input-sm" value="#000000">
+
+                    <input id="ts-alpha" type="number" name="ts-opacity" class="form-control tiny-field input-sm" title="Opacity" min="0" step="0.1" max="1" value="1">
+                    <span class="input-group-addon clearer" title="Reset to none"><i class="glyphicon glyphicon-remove"></i></span>
+                   </span>
+               </div>
+              </div>
+              <div class="row">
+               <div class="form-group to-fields">
+                    <label>Text Glow</label>
+                    <span class="input-group input-group-flex">
+                      <input id="to-spread" type="number" name="to-spread" min="0" title="Spread" class="form-control tiny-field input-sm" value="0">
+                      <input title="Color" id="to-color" name="to-color" type="color" class="form-control tiny-field input-sm" value="#000000">
+                      <input id="to-alpha" type="number" name="to-opacity" class="form-control tiny-field input-sm" title="Opacity" min="0" step="0.1" max="1" value="0.4">
+                      <span class="input-group-addon clearer" title="Reset to none"><i class="glyphicon glyphicon-remove"></i></span>
+                    </span>
+               </div>
+              </div>
+              <br>
+              <button type="button" class="btn btn-default btn-danger btn-xs" id="reset">Reset</button>
+
+        </div>
+        </div>
+              </div>
+          </div>
+      </div>
+<!--[if lte IE 8]><script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script><![endif]-->
+<!--[if gt IE 8]><!--><script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script><!--<![endif]-->
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <script src="js/editor.js"></script>
+  </body>
+</html>

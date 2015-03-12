@@ -1,0 +1,31 @@
+{
+  "curly": true,
+  "devel": true,
+  "eqeqeq": true,
+  "immed": true,
+  "latedef": true,
+  "newcap": true,
+  "noarg": true,
+  "jquery": true,
+  "sub": true,
+  "undef": true,
+  "smarttabs": true,
+  "unused": false,
+  "boss": true,
+  "eqnull": true,
+  "browser": true,
+  "predef": [
+    "_gaq",
+    "google",
+    "FB",
+    "_",
+    "Modernizr",
+    "Backbone",
+    "FastClick",
+    "tinysort",
+    "geoPosition",
+    "angular",
+    "skrollr",
+    "enquire"
+  ]
+}
