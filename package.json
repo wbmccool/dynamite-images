@@ -1,5 +1,5 @@
 {
-  "name": "Dynamite Images",
+  "name": "dynamite-images",
   "version": "0.2.0",
   "description": "Use url parameters to overlay text on email graphics, allowing you to customize them with TWIG tags",
   "main": "gulpfile.js",
