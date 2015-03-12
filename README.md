@@ -42,13 +42,13 @@ All unit measurements are specified in pixels except for line-height. Currently 
 - `text-shadow`: 4 parameters: the left offset, top offset, color, and opacity of a text-shadow effect
 - `outline`: 3 parameters: the spread (distance), color, and opacity of a text glow effect
 
-All parameters are optional though most have defaults set for any particular rendered string of text (positioning, color, etc.) The final url must be properly urlencoded (e.g. newlines encoded as %0A, spaces as %20, etc.).  The included editor.html will encode your selected parameters automatically and is a good place to check syntax.
+All parameters are optional though most have defaults set for any particular rendered string of text (positioning, color, etc.) The final url must be properly urlencoded (e.g. newlines encoded as %0A, spaces as %20, etc.).  The included `edit.html` will encode your selected parameters automatically and is a good place to check syntax.
 
 You can add more than one text layer by utilizing the URL parameter array notation. e.g., you could use `?text[0]=FirstLayer&left[0]=400&text[1]=SecondLayer&left[1]=300` to specify the configuration settings for each layer within its array index.  Either specify each array index explicitly (`text[0]=1&text[1]=2`) or implicitly (`text[]=1&text[]=2`) but do not mix the two approaches.
 
 <h3>Text Encoding</h3>
 
-By default, the copyable output code from the editor.html will not fully urlencode certain templating tags, leaving the tags and spaces inside of them intact.  This allows you to paste that code into a batch mailer that supports personalization/tag interpretation such that every user will get an image customized with their own dataset. The tags formats currently included are:
+By default, the copyable output code from the `edit.html` will not fully urlencode certain templating tags, leaving the tags and spaces inside of them intact.  This allows you to paste that code into a batch mailer that supports personalization/tag interpretation such that every user will get an image customized with their own dataset. The tags formats currently included are:
 - `{{ EXAMPLE }}`: i.e. a starting delimiter `{{`, any internal spaces or code, and then an ending delimiter `}}`
 - `%%EXAMPLE%%`: i.e. a starting delimiter `%%`, any internal spaces or code, and then an ending delimiter `%%`
 - `{% EXAMPLE %}`: i.e. a starting delimiter `{%`, any internal spaces or code, and then an ending delimiter `%}`
