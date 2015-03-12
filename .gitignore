@@ -9,6 +9,7 @@ tmp
 ######################
 .sass-cache
 node_modules
+npm-debug.log
 components
 dist
 *.dev.css
