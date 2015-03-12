@@ -50,7 +50,31 @@ function imagettftextWithTracking($image, $font_size, $angle, $x, $y, $color, $f
 
 function imagettfbboxWithTracking($font_size, $angle, $font_file, $text, $tracking) {
     if(!isset($tracking)){
-        return imagettfbbox($font_size, $angle, $font_file, $text);
+        $box = imagettfbbox($font_size, $angle, $font_file, $text);
+
+        // if($bbox[0] >= -1) {
+        //     $bbox['x'] = abs($bbox[0] + 1) * -1;
+        // } else {
+        //     //$bbox['x'] = 0;
+        //     $bbox['x'] = abs($bbox[0] + 2);
+        // }
+
+        // //calculate actual text width
+        // $bbox['width'] = abs($bbox[2] - $bbox[0]);
+        // if($bbox[0] < -1) {
+        //     $bbox['width'] = abs($bbox[2]) + abs($bbox[0]) - 1;
+        // }
+
+        // //calculate y baseline
+        // $bbox['y'] = abs($bbox[5] + 1);
+
+        // //calculate actual text height
+        // $bbox['height'] = abs($bbox[7]) - abs($bbox[1]);
+        // if($bbox[3] > 0) {
+        //     $bbox['height'] = abs($bbox[7] - $bbox[1]) - 1;
+        // }
+
+        return $bbox;
     }else{
         $numchar = strlen($text);
         $pos = 0;
