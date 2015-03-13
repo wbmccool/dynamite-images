@@ -248,11 +248,10 @@
         updateParamState();//get all the layers from the hash state
         setFormFromParams(layers[0]);//set all the form elements to match the first layer
 
-
-
         $form.on('change','[name="vertical-align"]',function(){
             //if centering vertically, reset the Y offset to 0
-            if($(this).val()==="middle"){
+            var val = $(this).val();
+            if(val==="middle" || val==="bottom"){
                 $('[name="top"]').val(0);
             }
         }).on('change','[name="text-align"]',function(){
@@ -337,11 +336,11 @@
             //if setting text position with a click, undo alignments first, then set offsets
             var offset = $(this).offset(),
                 $img = $preview.find('img'),
-                vd = {
+                vd = {//virtual dimensions
                     width:$img.width(),
                     height:$img.height()
                 },
-                rd = $img.data(),
+                rd = $img.data(),//real dimensions
                 left = e.pageX - offset.left,
                 top = e.pageY - offset.top;
 
@@ -351,8 +350,14 @@
             if(vd.height!== rd.height){
                 top = top * (rd.height/vd.height);
             }
-            $form.find('[name="text-align"]').val('').end()
-                .find('[name="vertical-align"]').val('').end()
+            /*
+            if(layers[editlayer]['vertical-align']==="bottom"){
+                top = rd.height - top;
+            }
+            */
+            $form
+                .find('[name="text-align"]').val('').end()
+                //.find('[name="vertical-align"]').val('').end()
                 .find('[name="left"]').val(Math.round(left)).end()
                 .find('[name="top"]').val(Math.round(top))
                 .trigger('change');
@@ -442,10 +447,11 @@
                 name = $el.attr('name');
 
                 if(name in defaults){
-                    $el.val(name==="top"?
-                        layers[editlayer]['font-size']||defaults['font-size']:
+                    $el.val(name==="top" && layers[editlayer]['vertical-align'] && layers[editlayer]['vertical-align']!==''?
+                        ($preview.find('img').data('height') / (layers[editlayer]['vertical-align']==="bottom"?1:2)):
                         defaults[name]);
                 }
+
                 else if(name in mergedFieldDefaults){
                     $el.val(mergedFieldDefaults[name]);
                 }
