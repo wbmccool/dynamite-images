@@ -48,31 +48,31 @@ function imagettftextWithTracking($image, $font_size, $angle, $x, $y, $color, $f
     }
 }
 
-function imagettfbboxWithTracking($font_size, $angle, $font_file, $text, $tracking) {
-    if(!isset($tracking)){
+function imagettfbboxWithTracking($font_size, $angle, $font_file, $text, $tracking = NULL) {
+    if(!isset($tracking) || $tracking==NULL){
         $box = imagettfbbox($font_size, $angle, $font_file, $text);
 
-        // if($box[0] >= -1) {
-        //     $box['x'] = abs($box[0] + 1) * -1;
-        // } else {
-        //     //$box['x'] = 0;
-        //     $box['x'] = abs($box[0] + 2);
-        // }
+        if($box[0] >= -1) {
+            $box['x'] = abs($box[0] + 1) * -1;
+        } else {
+            //$box['x'] = 0;
+            $box['x'] = abs($box[0] + 2);
+        }
 
-        // //calculate actual text width
-        // $box['width'] = abs($box[2] - $box[0]);
-        // if($box[0] < -1) {
-        //     $box['width'] = abs($box[2]) + abs($box[0]) - 1;
-        // }
+        //calculate actual text width
+        $box['width'] = abs($box[2] - $box[0]);
+        if($box[0] < -1) {
+            $box['width'] = abs($box[2]) + abs($box[0]) - 1;
+        }
 
-        // //calculate y baseline
-        // $box['y'] = abs($box[5] + 1);
+        //calculate y baseline
+        $box['y'] = abs($box[5] + 1);
 
-        // //calculate actual text height
-        // $box['height'] = abs($box[7]) - abs($box[1]);
-        // if($box[3] > 0) {
-        //     $box['height'] = abs($box[7] - $box[1]) - 1;
-        // }
+        //calculate actual text height
+        $box['height'] = abs($box[7]) - abs($box[1]);
+        if($box[3] > 0) {
+            $box['height'] = abs($box[7] - $box[1]) - 1;
+        }
 
         return $box;
     }else{

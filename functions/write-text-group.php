@@ -17,12 +17,19 @@ function writeTextGroup($image, $image_width, $image_height, $params){
         $params['text'] = ucwords( $params['text'] );
     }
 
-    /*write the text*/
-    if($params['white-space']=="normal"){
+    /*write the text, multiline*/
+    if($params['white-space']=="normal" || strpos($params['text'],"\r\n")!==false){
+
+        if(strstr($params['text'],"\r\n")){
+            $params['text'] = str_replace("\r\n", ' |-| ', $params['text']);
+        }
+
         $words = explode(' ', $params['text']);
-        $mlength = $params['max-width']>0?
-            $params['max-width'] : abs($params['text-align'] == "right"?
-                $image_width - $params['right'] : $image_width - $params['left']);
+        $mlength = $params['max-width']>0 && $params['white-space']=="normal" ?
+            $params['max-width'] :
+            $params['white-space']=="normal" ?
+                abs($image_width - $params['left']) :
+                NULL;
 
         $line = '';
 
@@ -30,7 +37,7 @@ function writeTextGroup($image, $image_width, $image_height, $params){
 
             $sizeWithWord = imagettfbboxWithTracking($params['font-size'],  $params['angle'], $font_file, $line==""? $word: ($line .' '.$word), $params['letter-spacing']);
 
-            if(($sizeWithWord[2] - abs($sizeWithWord[0]) > $mlength)){
+            if( strpos($word, '|-|')!==false || ($mlength != NULL && ($sizeWithWord[2] - abs($sizeWithWord[0]) > $mlength))){
 
                 if($params['text-align'] == "center"){
                     $tmpleft = centerText($image, $params['font-size'], $font_file, $line, $image_width, $params['left'], $params['letter-spacing']);
@@ -42,11 +49,11 @@ function writeTextGroup($image, $image_width, $image_height, $params){
                     $tmpleft = $params['left'];
                 }
 
-                $sizeWithWord = imagettfbbox($params['font-size'],  $params['angle'], $font_file, $line);
-                $lines[] = array('line_text'=>$line,'line_left'=>$tmpleft, 'font_height'=> abs($sizeWithWord[7])-abs($sizeWithWord[1]) );
+                $sizeWithWord = imagettfbboxWithTracking($params['font-size'],  $params['angle'], $font_file, $line);//only care about height here
+                $lines[] = array('line_text'=>$line,'line_left'=>$tmpleft, 'font_height'=> $sizeWithWord['height'] );
 
                 //writeTextLine($image, $params['font-size'], $params['angle'], $tmpleft, $params['top']+$topset, $color, $font_file, $line, $params['text-shadow'], $params['outline'], $params['letter-spacing']);
-                $line = $word;
+                $line = strpos($word, '|-|')===false?$word:'';
                 //$topset = $topset + ($params['line-height']*$params['font-size']);
             }else{
                 $line = $line==""? $word: ($line .' '.$word);
@@ -63,8 +70,8 @@ function writeTextGroup($image, $image_width, $image_height, $params){
         else{
             $tmpleft = $params['left'];
         }
-        $sizeWithWord = imagettfbbox($params['font-size'],  $params['angle'], $font_file, $line);
-        $lines[] = array('line_text'=>$line,'line_left'=>$tmpleft, 'font_height'=> abs($sizeWithWord[7])-abs($sizeWithWord[1]));
+        $sizeWithWord = imagettfbboxWithTracking($params['font-size'],  $params['angle'], $font_file, $line);//only care about height here
+        $lines[] = array('line_text'=>$line,'line_left'=>$tmpleft, 'font_height'=> $sizeWithWord['height']);
         //writeTextLine($image, $params['font-size'], $params['angle'], $tmpleft, $params['top']+$topset, $color, $font_file, $line, $params['text-shadow'], $params['outline'], $params['letter-spacing']);//remaining lines
 
     }
@@ -76,8 +83,12 @@ function writeTextGroup($image, $image_width, $image_height, $params){
         elseif ($params['text-align'] == "right"){
             $params['left'] = rightalignText($image, $params['font-size'], $font_file, $params['text'], $image_width, $params['left'], $params['letter-spacing']);
         }
-        $sizeWithWord = imagettfbbox($params['font-size'],  $params['angle'], $font_file, $line);
-        $lines[] = array('line_text'=>$params['text'],'line_left'=>$params['left'], 'font_height'=> abs($sizeWithWord[7])-abs($sizeWithWord[1]));
+        $sizeWithWord = imagettfbboxWithTracking($params['font-size'],  $params['angle'], $font_file, $params['text']);//only care about height here
+
+        //imagestring($image, 5, 40, 120, $sizeWithWord.' h', $black);//shadow
+
+        $lines[] = array('line_text'=>$params['text'],'line_left'=>$params['left'], 'font_height'=> $sizeWithWord['height']);
+
         //writeTextLine($image, $params['font-size'], $params['angle'], $params['left'], $params['top'], $color, $font_file, $params['text'], $params['text-shadow'], $params['outline'], $params['letter-spacing']);
     }
 
@@ -102,7 +113,7 @@ function writeTextGroup($image, $image_width, $image_height, $params){
         $params['top'] = $params['top'] + $params['font-size'];//start the line at the top of the chosen position instead of the baseline
     }
 
-    imagestring($image, 5, 11, 30, 'bh: '.$block_height.' ' .count($lines) . ' '. $params['line-height'] * $params['font-size'] * (count($lines)-1), $black);//shadow
+    imagestring($image, 5, 11, 30, 'bh: '.$block_height.', firstlineh:'.$lines[0]['font_height']. ', #lines:' .count($lines) . ', line-space:'. $params['line-height'] * $params['font-size'] * (count($lines)-1), $black);//shadow
 
     foreach ($lines as &$line){
         writeTextLine($image, $params['font-size'], $params['angle'], $line['line_left'], $params['top']+$topset, $color, $font_file, $line['line_text'], $params['text-shadow'], $params['outline'], $params['letter-spacing']);//remaining lines

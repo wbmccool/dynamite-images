@@ -250,15 +250,27 @@
 
         $form.on('change','[name="vertical-align"]',function(){
             //if centering vertically, reset the Y offset to 0
-            var val = $(this).val();
-            if(val==="middle" || val==="bottom"){
-                $('[name="top"]').val(0);
+            var val = $(this).val(),
+                $topField = $('[name="top"]'),
+                imgHeight = $preview.find('img').data('height');
+            if(val==="middle"){
+                $topField.val(imgHeight/2);
+            }
+            else if(val==="bottom"){
+                $topField.val(imgHeight);
+            }else{
+                $topField.val(0);
             }
         }).on('change','[name="text-align"]',function(){
             //if centering horizontally, reset the X offset to 0
-            if($(this).val()==="center" || $(this).val()==="right"){
+            var val = $(this).val();
+            if(val==="center" || val==="right"){
                 $('[name="left"]').val(0);
             }
+        }).on('change','[name="white-space"]',function(){
+            //if centering horizontally, reset the X offset to 0
+            var val = $(this).val();
+            $form.find('[name="max-width"]').closest('.form-group').toggleClass('dim',val!=="normal");
         }).on("change init navigate", function(e){
 
             layers[editlayer] = $(this).find('[name]').filter(function(index, element) {

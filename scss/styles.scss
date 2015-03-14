@@ -89,7 +89,7 @@ label{float:left;margin: 0; font-size:10px; width:100%;clear:both;}
     flex-direction:column;
 }
 #preview {
-    transition:opacity,blur,grayscale 0.2s,0.3s;
+    transition:opacity,blur 0.2s,0.3s;
     position:relative;
     flex:1;
     img {
@@ -111,6 +111,12 @@ label{float:left;margin: 0; font-size:10px; width:100%;clear:both;}
 
 .form-elements{
     padding:0 15px;
+}
+
+.dim{
+    opacity:0.3;
+    filter: blur(0.5px);
+    transition:opacity,blur 0.2s,0.3s;
 }
 
 .loading{

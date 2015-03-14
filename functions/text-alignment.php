@@ -17,7 +17,7 @@ function rightalignText($image_r, $fontSize_r, $font_file_r, $text_r, $iwidth, $
 }
 
 function centerVert($image_r, $fontSize_r, $font_file_r, $text_r, $iheight, $top_r, $bheight, $first_line_height){
-    return $top_r - abs($bheight/2) + $first_line_height;
+    return $top_r - round($bheight/2) + $first_line_height;
 }
 
 function bottomalignText($image_r, $fontSize_r, $font_file_r, $text_r, $iheight, $top_r, $bheight, $first_line_height){
