@@ -113,7 +113,7 @@ function writeTextGroup($image, $image_width, $image_height, $params){
         $params['top'] = $params['top'] + $params['font-size'];//start the line at the top of the chosen position instead of the baseline
     }
 
-    imagestring($image, 5, 11, 30, 'bh: '.$block_height.', firstlineh:'.$lines[0]['font_height']. ', #lines:' .count($lines) . ', line-space:'. $params['line-height'] * $params['font-size'] * (count($lines)-1), $black);//shadow
+    //imagestring($image, 5, 11, 30, 'bh: '.$block_height.', firstlineh:'.$lines[0]['font_height']. ', #lines:' .count($lines) . ', line-space:'. $params['line-height'] * $params['font-size'] * (count($lines)-1), $black);//shadow
 
     foreach ($lines as &$line){
         writeTextLine($image, $params['font-size'], $params['angle'], $line['line_left'], $params['top']+$topset, $color, $font_file, $line['line_text'], $params['text-shadow'], $params['outline'], $params['letter-spacing']);//remaining lines
