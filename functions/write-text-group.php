@@ -16,6 +16,9 @@ function writeTextGroup($image, $image_width, $image_height, $params){
     elseif($params['text-transform']=="capitalize"){
         $params['text'] = ucwords( $params['text'] );
     }
+    elseif($params['text-transform']=="lowercase"){
+        $params['text'] = strtolower( $params['text'] );
+    }
 
     /*write the text, multiline*/
     if($params['white-space']=="normal" || strpos($params['text'],"\r\n")!==false){
