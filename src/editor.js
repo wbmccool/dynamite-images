@@ -181,6 +181,9 @@
         if(startParams.color && startParams.color.indexOf('#')===-1){
             startParams.color = '#'+startParams.color;
         }
+        if(startParams['white-space']==="normal"){
+            $form.find('[name="max-width"]').closest('.form-group').toggleClass('dim',false);
+        }
 
         /*I think these are not properly clearing between layer switches: we may need a global way to reset defaults*/
 
