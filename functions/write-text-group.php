@@ -32,7 +32,10 @@ function writeTextGroup($image, $image_width, $image_height, $params){
             intval($params['max-width']) :
             (
             $params['white-space']=="normal" ?
-                abs($image_width - $params['left']) :
+                ($params['text-align'] != "center" ?
+                    abs($image_width - $params['left']):
+                    ($image_width - (round( abs($params['left']-($image_width/2)) )*2) )
+                ) :
                 NULL
             );
 

@@ -7,7 +7,7 @@ function centerText($image_r, $fontSize_r, $font_file_r, $text_r, $iwidth, $left
     if(!isset($left_r)){
         $left_r = 0;
     }
-    return abs($iwidth/2) - ($text_width/2) + $left_r;
+    return $left_r - round($text_width/2);
 }
 
 function rightalignText($image_r, $fontSize_r, $font_file_r, $text_r, $iwidth, $right_r, $tracking){

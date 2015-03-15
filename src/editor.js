@@ -266,8 +266,12 @@
             }
         }).on('change','[name="text-align"]',function(){
             //if centering horizontally, reset the X offset to 0
-            var val = $(this).val();
-            if(val==="center" || val==="right"){
+            var val = $(this).val(),
+            imgWidth = $preview.find('img').data('width');
+            if(val==="center"){
+                $('[name="left"]').val(Math.abs(imgWidth/2));
+            }
+            else if(val==="" || val==="right"){
                 $('[name="left"]').val(0);
             }
         }).on('change','[name="white-space"]',function(){
@@ -362,7 +366,8 @@
                 },
                 rd = $img.data(),//real dimensions
                 left = e.pageX - offset.left,
-                top = e.pageY - offset.top;
+                top = e.pageY - offset.top,
+                alignment = $form.find('[name="text-align"]').val();
 
             if(vd.width !== rd.width){
                 left = left * (rd.width/vd.width);
@@ -370,13 +375,16 @@
             if(vd.height!== rd.height){
                 top = top * (rd.height/vd.height);
             }
-            /*
-            if(layers[editlayer]['vertical-align']==="bottom"){
-                top = rd.height - top;
+
+            if(alignment==="right"){
+                left = rd.width - left;
             }
-            */
+            else if(alignment==="center"){
+                //$form.find('[name="text-align"]').val('').end();
+            }
+
             $form
-                .find('[name="text-align"]').val('').end()
+                //.find('[name="text-align"]').val('').end()
                 //.find('[name="vertical-align"]').val('').end()
                 .find('[name="left"]').val(Math.round(left)).end()
                 .find('[name="top"]').val(Math.round(top))
