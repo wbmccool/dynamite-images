@@ -345,7 +345,12 @@
             },800);
         });
 
-        $output.on('focus',function(){ this.select(); });//select all text in copy/paste target
+        $output.on('focus',function(){
+            var $el = $(this);
+            window.setTimeout (function(){
+                $el.select();
+            },20);
+        });//select all text in copy/paste target
 
         $preview.on('click','img',function(e){
             //if setting text position with a click, undo alignments first, then set offsets
