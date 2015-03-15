@@ -28,11 +28,13 @@ function writeTextGroup($image, $image_width, $image_height, $params){
         }
 
         $words = explode(' ', $params['text']);
-        $mlength = $params['max-width']>0 && $params['white-space']=="normal" ?
-            $params['max-width'] :
+        $mlength = (intval($params['max-width'])>0 && $params['white-space']=="normal") ?
+            intval($params['max-width']) :
+            (
             $params['white-space']=="normal" ?
                 abs($image_width - $params['left']) :
-                NULL;
+                NULL
+            );
 
         $line = '';
 
@@ -88,7 +90,7 @@ function writeTextGroup($image, $image_width, $image_height, $params){
         }
         $sizeWithWord = imagettfbboxWithTracking($params['font-size'],  $params['angle'], $font_file, $params['text']);//only care about height here
 
-        //imagestring($image, 5, 40, 120, $sizeWithWord.' h', $black);//shadow
+
 
         $lines[] = array('line_text'=>$params['text'],'line_left'=>$params['left'], 'font_height'=> $sizeWithWord['height']);
 
