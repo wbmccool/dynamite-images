@@ -20,9 +20,9 @@ function writeTextLine($image, $fontSize, $angle, $left, $top, $color, $font_fil
     }
 
     imagettftextWithTracking($image, $fontSize, $angle, $left, $top, $color, $font_file, $text, $tracking);
-    /*terrible underlines
-    $textdim = imagettfbbox($fontSize, 0, $font_file, $text);
-    ImageLine($image, $left, $top+$textdim[1]-5, $left+$textdim[4],  $top+$textdim[1]-5, $color);
-    */
+    //terrible underlines
+    // $textdim = imagettfbboxWithTracking($fontSize, 0, $font_file, $text);
+    // ImageLine($image, $left-1, ($top+$textdim[1])+2, $left+$textdim['width'],  ($top+$textdim[1])+2, $color);
+
 }
 ?>
