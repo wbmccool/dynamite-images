@@ -33,7 +33,6 @@
 .form-group{
     display:block;
     width:100%;
-    overflow:hidden;
 }
 
 
@@ -81,6 +80,27 @@ label{float:left;margin: 0; font-size:10px; width:100%;clear:both;}
 
 .clearer{
     cursor: pointer;
+}
+
+
+
+.special-link{
+    opacity:0;
+    cursor:pointer;
+    font-size:8px;
+    position:absolute;
+}
+.posleft{
+    left:5px;
+}
+.posright{
+    right:5px;
+}
+.form-group{
+    position:relative;
+    &:hover .special-link{
+        opacity:1;
+    }
 }
 
 .image-preview{
@@ -209,4 +229,8 @@ label{float:left;margin: 0; font-size:10px; width:100%;clear:both;}
 
 #reset{
     float:right;
+}
+
+.overflow-hidden{
+     overflow:hidden;
 }

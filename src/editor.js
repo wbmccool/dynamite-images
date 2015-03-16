@@ -68,8 +68,7 @@
     }
     var revision = 0,
         timeout,
-        layers = [],
-        editlayer = 0,
+
         $body = $('body'),
         $layerControl = $body.find('#layers'),
         $form = $body.find("form"),
@@ -88,6 +87,10 @@
         layertabsHTML = '',
         get = decodeParam(location.search.replace('?','')),
         filetype = get.img && get.img.split('.')[1],
+        layers = [],
+        layerkey ='last-edited-layer-'+get.img,
+        sEditlayer = sessionStorage && parseInt(sessionStorage.getItem(layerkey),10),
+        editlayer = sEditlayer||0,
         defaultEditURL = '/edit.html?local=true&img=BSD-logo.png',
         defaults={
             'text-align':'',
@@ -226,16 +229,19 @@
             layertabsHTML = '';
 
         layers = layerSplit(decodeParam(hash));
+        editlayer = layers[editlayer] && editlayer||layers.length-1>0 && layers.length-1||0;
+        sessionStorage.setItem(layerkey,editlayer);
 
         //totally fresh defaults
         if(hash===""){
-            layers[0].top = 100;
-            layers[0]['text-align']='center';
+            layers[0].left = 80;
+            layers[0].top = 80;
+            layers[0]['text-align']='';
         }
 
         $layerControl.find('.layer-tab').remove();
         $.each(layers,function(i){
-            layertabsHTML += newLayerTab(i,0);
+            layertabsHTML += newLayerTab(i,editlayer);
         });
         $layerControl.prepend(layertabsHTML);
         $('#new-layer').toggle(layers.length < 7);
@@ -249,7 +255,7 @@
     function startup(){
 
         updateParamState();//get all the layers from the hash state
-        setFormFromParams(layers[0]);//set all the form elements to match the first layer
+        setFormFromParams(layers[editlayer]);//set all the form elements to match the first layer
 
         $form.on('change','[name="vertical-align"]',function(){
             //if centering vertically, reset the Y offset to 0
@@ -424,6 +430,7 @@
             $layerControl.find('.active').removeClass('active');
             var $el = $(this).addClass('active');
             editlayer = parseFloat($el.data('layer'));
+            sessionStorage.setItem(layerkey,editlayer);
             setFormFromParams(layers[editlayer]);
         });
 
@@ -457,6 +464,15 @@
         }).on('click','#reset',function(){
             var reset = confirm("Are you sure you want to start from scratch?");
             if(reset) { window.location = location.href.split('#')[0]; }
+        }).on('click','.special-link',function(){
+            var data = $(this).data(),
+                dimensions = $preview.find('img').data(),
+                dimension = data.dimension,
+                $target = $form.find('[name="'+data.target+'"]');
+
+            $target.val(data.which==="center" ? Math.round(dimensions[dimension]/2) : dimensions[dimension] ).trigger('change');
+
+
         }).on('click','[data-delete]',function(){
             var $el = $(this),
             which = $el.data('delete');
