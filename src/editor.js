@@ -464,15 +464,6 @@
         }).on('click','#reset',function(){
             var reset = confirm("Are you sure you want to start from scratch?");
             if(reset) { window.location = location.href.split('#')[0]; }
-        }).on('click','.special-link',function(){
-            var data = $(this).data(),
-                dimensions = $preview.find('img').data(),
-                dimension = data.dimension,
-                $target = $form.find('[name="'+data.target+'"]');
-
-            $target.val(data.which==="center" ? Math.round(dimensions[dimension]/2) : dimensions[dimension] ).trigger('change');
-
-
         }).on('click','[data-delete]',function(){
             var $el = $(this),
             which = $el.data('delete');
@@ -491,9 +482,13 @@
                 name = $el.attr('name');
 
                 if(name in defaults){
-                    $el.val(name==="top" && layers[editlayer]['vertical-align'] && layers[editlayer]['vertical-align']!==''?
-                        ($preview.find('img').data('height') / (layers[editlayer]['vertical-align']==="bottom"?1:2)):
-                        defaults[name]);
+                    $el.val(
+                        name==="top" && layers[editlayer]['vertical-align'] && layers[editlayer]['vertical-align']!==''?
+                            ($preview.find('img').data('height') / (layers[editlayer]['vertical-align']==="bottom"?1:2)):
+                            name==="left" && layers[editlayer]['text-align'] && layers[editlayer]['text-align']==='center'?
+                                Math.round($preview.find('img').data('width')/2):
+                                defaults[name]
+                    );
                 }
 
                 else if(name in mergedFieldDefaults){
