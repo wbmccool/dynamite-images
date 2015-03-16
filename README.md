@@ -56,3 +56,8 @@ By default, the copyable output code from the `edit.html` will not fully urlenco
 - `{{ EXAMPLE }}`: i.e. a starting delimiter `{{`, any internal spaces or code, and then an ending delimiter `}}`
 - `%%EXAMPLE%%`: i.e. a starting delimiter `%%`, any internal spaces or code, and then an ending delimiter `%%`
 - `{% EXAMPLE %}`: i.e. a starting delimiter `{%`, any internal spaces or code, and then an ending delimiter `%}`
+
+<h2>Important considerations</h2>
+Some older browsers/email clients have an effective maximum character length on url strings ([usually 2048](http://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers#answer-417184)).  The editor will warn you about any that begin to exceed that length, but especially with customized data that can vary in length, it pays to be conservative.
+
+Some older email clients also have an effective maximum height (Outlook primarily: [more here](https://www.campaignmonitor.com/blog/post/3103/maximum-height-for-images-in-email-outlook/) [and here](http://stackoverflow.com/questions/2419388/need-workaround-for-outlook-2007-html-email-rendering-bug-horizontal-gaps/5662156#5662156)) of around 1728 pixels. If you're creating an email design with a single very long image that comes close to or exceeds that length, it's best to break that into several smaller images (which may also have some "lazy loading" benefits in emails for clients that download each image in turn when only the first is visible above the fold).

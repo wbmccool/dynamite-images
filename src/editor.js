@@ -83,6 +83,7 @@
         $tsField = $body.find('[name="text-shadow"]'),
         $toControls = $body.find('.to-fields'),
         $toField = $body.find('[name="outline"]'),
+        $alertZone = $body.find('.alert-zone'),
         local = gup('local')==="true",
         layertabsHTML = '',
         get = decodeParam(location.search.replace('?','')),
@@ -252,6 +253,12 @@
         return layers;
     }
 
+    function warn(msg){
+        var htmlstring = '<div class="alert alert-warning alert-dismissible fixed-alert" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Warning!</strong> '+msg+'</div>';
+        $alertZone.append(htmlstring);
+    }
+    window.warn = warn;
+
     function startup(){
 
         updateParamState();//get all the layers from the hash state
@@ -318,6 +325,7 @@
                 timer = _.now(),
                 img = new Image();
 
+            $alertZone.empty();
             $preview.addClass('loading');
             img.onerror = showUploadForm;
             img.onload = function(){
@@ -325,16 +333,24 @@
                     data = {
                         height:img.height,
                         width:img.width,
-                        generated_in: ((_.now()-timer))+'ms'
+                        generated_in: ((_.now()-timer))+'ms',
+                        url_character_length: img.src.length
                     };
                 $preview.removeClass('loading').html(img);
                 $(img).data(data).attr({'alt':revision,title:'Click to position the text layer absolutely'});
                 $data.html(JSON.stringify(data,undefined,1));
+                if(data.height>=1700){
+                    warn('Images longer than 1700 pixels are not recommended, as they may break in older email clients. Consider breaking your image into sections.');
+                }
             };
             img.src = src;
 
             $output.val(parseUrl(src).href.split('?')[0] + "?" + paramsUnencoded);
             $outputLink.attr('href',img.src).css({visibility:'visible',opacity:1});
+
+            if(img.src && img.src.length>=2000){
+                warn('The url string you\'ve created is longer than 2000 characters which may break in older email clients. Consider breaking your image into sections.');
+            }
             revision++;
 
             if(e.type!=="navigate"){
