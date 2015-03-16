@@ -24,9 +24,15 @@ header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $max_age) . ' GMT');
 header("Cache-Control: public, max-age=$max_age");
 
 
+if (!function_exists('boolval')) {
+        function boolval($val) {
+                return (bool) $val;
+        }
+}
+
 /*Get and set basic parameters and defaults*/
-$local = getParam('local', false);//if local, option to use local files for testing
-$debug = getParam('debug', false);//local defaults to debug mode
+$local = boolval(getParam('local', false));//if local, option to use local files for testing
+$debug = boolval(getParam('debug', false));//local defaults to debug mode
 $pngcomp = getParam('pngcomp',5);
 $jpgquality = getParam('jpgquality',100);
 

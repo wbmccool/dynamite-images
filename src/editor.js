@@ -110,6 +110,7 @@
             'text-shadow':'',
             'outline':''
         },
+        allowedKeys = _.keys(defaults).concat(['text']),
         mergedFieldDefaults = {
             'ts-left':0,
             'ts-top':0,
@@ -169,12 +170,14 @@
                 if(!array[extractedKey]){
                     array[extractedKey]={};
                 }
-                array[extractedKey][truekey] = v;
+                if(_.contains(allowedKeys,truekey)){//only allowed keys
+                    array[extractedKey][truekey] = v;
+                }
             }
         });
         return array;
     }
-
+console.log(allowedKeys);
 
     function setFormFromParams(startParams){
         var tstemp,
@@ -302,11 +305,11 @@
 
             layers = _.map(layers, function(v,i){
                 return _.pick(v,function(v,k){
-                    return v !== "" && v !==defaults[k];
+                    return k!=='local' && v !== "" && v !==defaults[k];
                 });
             });
 
-            var params = (get.local?'local=true':'') + (layers.length===1?
+            var params = (get.local?'local=1':'') + (layers.length===1?
                     '&'+$.param(_.omit(layers[0],'text')) :
                     _.reduce(layers, function(memo,v,i){
                         return memo +'&'+ ($.param(_.omit(v,'text')).replace(/\+/g,'%20').replace(/\=/g,'['+i+']='));
@@ -340,7 +343,7 @@
                 $(img).data(data).attr({'alt':revision,title:'Click to position the text layer absolutely'});
                 $data.html(JSON.stringify(data,undefined,1));
                 if(data.height>=1700){
-                    warn('Images longer than 1700 pixels are not recommended, as they may break in older email clients. Consider breaking your image into sections.');
+                    warn('Images longer than 1700 pixels are not recommended, as they may break in older email clients. Consider breaking your image into multiple images.');
                 }
             };
             img.src = src;
@@ -348,8 +351,11 @@
             $output.val(parseUrl(src).href.split('?')[0] + "?" + paramsUnencoded);
             $outputLink.attr('href',img.src).css({visibility:'visible',opacity:1});
 
-            if(img.src && img.src.length>=2000){
-                warn('The url string you\'ve created is longer than 2000 characters which may break in older email clients. Consider breaking your image into sections.');
+            if(img.src && img.src.length>=2118){
+                warn('The url string you\'ve created is longer than 2117 characters which exceeds what Google App Engine will allow (the image preview is very likely broken).  Consider breaking your image into multiple images.');
+
+            }else if(img.src && img.src.length>=1900){
+                warn('The url string you\'ve created is longer than 1900 characters which may start to break in older email clients. Consider breaking your image into multiple images.');
             }
             revision++;
 
@@ -465,7 +471,7 @@
                 ),
                 $newLayer;
 
-            layers.push(newlayer);
+            layers.push( _.pick(newlayer,_.keys(defaults)) );
             editlayer = layers.length-1;
 
             $newLayer = $(newLayerTab(editlayer));
