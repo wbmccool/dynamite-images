@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/bsd/dynamite-image-urls.git"
+    "url": "git://github.com/bluestatedigital/dynamite-image-urls.git"
   },
   "author": "Blue State Digital",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bsd/dynamite-image-urls/issues"
+    "url": "https://github.com/bluestatedigital/dynamite-image-urls/issues"
   },
-  "homepage": "https://github.com/bsd/dynamite-image-urls",
+  "homepage": "https://github.com/bluestatedigital/dynamite-image-urls",
   "devDependencies": {
     "gulp": "^3.8.11",
     "gulp-autoprefixer": "^1.0.1",

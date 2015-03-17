@@ -141,7 +141,7 @@
     function showUploadForm(){
         $preview.removeClass('loading');
         if(!local){
-            $preview.load('/upload.php', function(resp, status, xhr){
+            $preview.load('/upload.php #upload-form-col', function(resp, status, xhr){
 				if(status === "error"){
 					$preview.html("No image specified. <p><a href='/upload.php'>Please login as an admin to upload an image</a>.");
 				}

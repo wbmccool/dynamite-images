@@ -46,13 +46,13 @@ All unit measurements are specified in pixels except for line-height. Currently 
 
 All parameters are optional though most have defaults set for any particular rendered string of text (positioning, color, etc.) The final url must be properly urlencoded (e.g. newlines encoded as %0A, spaces as %20, etc.).  The included `edit.html` will encode your selected parameters automatically and is a good place to experiment with the syntax.
 
-You can add more than one text layer by utilizing the URL parameter array notation. e.g., you could use `?text[0]=FirstLayer&left[0]=400&text[1]=SecondLayer&left[1]=300` to specify the configuration settings for each layer within its array index.  Either specify each array index explicitly (`text[0]=1&text[1]=2`) or implicitly (`text[]=1&text[]=2`) but do not mix the two approaches.  Again, experiment with `edit.html` to get a sense of how multiple layers work.
+You can add more than one text layer by utilizing the URL parameter array notation. e.g., you could use `?text[0]=FirstLayer&left[0]=400&text[1]=SecondLayer&left[1]=300` to specify the configuration settings for each layer within its array index.  Either specify each array index explicitly (`text[0]=1&text[1]=2`) or implicitly (`text[]=1&text[]=2`) but do not mix the two approaches.  Again, experiment with `edit.html` to get a sense of how multiple layers work.  The local and debug parameters are exceptions: they should not be passed as array parameters.
 
 Finally, clicking on the preview image `edit.html` will set the X/Y offset, placing the text above, below, or centered on a point according to the alignment settings.  Doing this will automatically set the X alignment/text-align property to `left` but you can still change it to center or right align and further adjust the X offset from there.
 
 <h3>Text Encoding</h3>
 
-By default, the copyable output code from the `edit.html` will not fully urlencode certain templating tags, leaving the tags and spaces inside of them intact.  This allows you to paste that code into a batch mailer that supports personalization/tag interpretation such that every user will get an image customized with their own data. The tags formats currently included are:
+By default, the copyable `Output Code` from the `edit.html` will not fully urlencode certain templating tags, leaving the tags and spaces inside of them intact.  This allows you to paste that code into a batch mailer that supports personalization/tag interpretation such that every user will get an image customized with their own data. The tags formats currently included are:
 - `{{ EXAMPLE }}`: i.e. a starting delimiter `{{`, any internal spaces or code, and then an ending delimiter `}}`
 - `%%EXAMPLE%%`: i.e. a starting delimiter `%%`, any internal spaces or code, and then an ending delimiter `%%`
 - `{% EXAMPLE %}`: i.e. a starting delimiter `{%`, any internal spaces or code, and then an ending delimiter `%}`
@@ -61,3 +61,17 @@ By default, the copyable output code from the `edit.html` will not fully urlenco
 Some older browsers/email clients have an effective maximum character length on url strings ([usually 2048](http://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers#answer-417184)).  The editor will warn you about any that begin to exceed that length, but especially with customized data that can vary in length, it pays to be conservative.
 
 Some older email clients also have an effective maximum height (Outlook primarily: [more here](https://www.campaignmonitor.com/blog/post/3103/maximum-height-for-images-in-email-outlook/) [and here](http://stackoverflow.com/questions/2419388/need-workaround-for-outlook-2007-html-email-rendering-bug-horizontal-gaps/5662156#5662156)) of around 1728 pixels. If you're creating an email design with a single very long image that comes close to or exceeds that length, it's best to break that into several smaller images (which may also have some "lazy loading" benefits in emails for clients that download each image in turn when only the first is visible above the fold).
+
+<h2>Local Development & Contributing</h2>
+
+The (rudimentary) upload/editor interfaces are built with [Bootstrap](http://getbootstrap.com/) and gulp.
+
+Run
+```
+npm install
+```
+and then
+```
+gulp
+```
+to compile the css and js files.
