@@ -48,7 +48,7 @@ All parameters are optional though most have defaults set for any particular ren
 
 You can add more than one text layer by utilizing the URL parameter array notation. e.g., you could use `?text[0]=FirstLayer&left[0]=400&text[1]=SecondLayer&left[1]=300` to specify the configuration settings for each layer within its array index.  Either specify each array index explicitly (`text[0]=1&text[1]=2`) or implicitly (`text[]=1&text[]=2`) but do not mix the two approaches.  Again, experiment with `edit.html` to get a sense of how multiple layers work.  The local and debug parameters are exceptions: they should not be passed as array parameters.
 
-Finally, clicking on the preview image `edit.html` will set the X/Y offset, placing the text above, below, or centered on a point according to the alignment settings.  Doing this will automatically set the X alignment/text-align property to `left` but you can still change it to center or right align and further adjust the X offset from there.
+Finally, clicking on the preview image `edit.html` will set the X/Y offset, placing the text above, below, left of, right of, or centered on a point according to the text and vertical alignment settings.
 
 <h3>Text Encoding</h3>
 
