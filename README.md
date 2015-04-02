@@ -7,7 +7,7 @@ It is a self-contained Google App Engine app that will allow you to stand up you
 
 <h2>Installation</h2>
 
-Simply create a Google App Engine app and deploy it, with your desired font files placed in the `fonts` folder and your images contained in the `img` folder
+Simply [create a Google App Engine app](https://github.com/bluestatedigital/dynamite-images/wiki/Install) and deploy it, with your desired font files placed in the `fonts` folder and any local images contained in the `img` folder (these require the use of the `local=1` parameter to access).
 
 In order to support uploads of files outside of the `img` folder (ie, to allow you to upload new base images without having to re-deploy the app each time)
 
@@ -15,7 +15,7 @@ In order to support uploads of files outside of the `img` folder (ie, to allow y
 2. Enable Google Cloud Storage.
 3. To give other users permission to upload images, you'll need to add them as administrators to your application.
 
-The display/edit part of the code can be run locally or on a regular php server without GAE integration as long as the url parameter "local" is set to true (i.e. `http://localhost:4007/BSD-logo.png?local=true&text=Using%20a%20local%20image%20from%20the%20/img/%20directory&max-width=400&white-space=normal&top=50&text-align=center` ) and images in the local /img/ are referenced.
+The display/edit part of the code can be run locally or on a regular php server without GAE integration as long as the url parameter "local" is set to true on the image urls (i.e. `http://localhost:4007/BSD-logo.png?local=true&text=Using%20a%20local%20image%20from%20the%20/img/%20directory&max-width=400&white-space=normal&top=50&text-align=center` ) and the editor (i.e. `http://localhost:4007/edit.html?local=true&img=BSD-logo.png` ) and existing images in the local /img/ are referenced.
 
 <h2>API</h2>
 By default, the API works by passing parameters to an image's path. For example, if your app is `your-demo-app`, and you upload `banner.png`, your initial API endpoint will be `your-demo-app.appspot.com/banner.png` and `your-demo-app.appspot.com/banner.png?text=Example&top=100` would return an image with that text printed on it, 100 pixels from the top. You can specify the url parameters either manually, or use the client packaged at `/edit.html` to set the parameters and get the final link.
