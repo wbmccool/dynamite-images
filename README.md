@@ -1,11 +1,11 @@
 # Dynamite Images
 🎨⚡📝: DYNAmically Modeled Image + Text Experience
 
-Dynamite Images is a project that allows you to dynamically pass styled, personalized text directly into images for use in personalized materials like emails.
+Dynamite Images is a project that allows you to dynamically pass styled, personalized text directly into images for use in personalized materials like emails. It can be used to personalize mass emails (by templating the image url) or drive web applications where a user customizes and image and needs their created image to be instantly shareable.
 
-It is a self-contained Google App Engine app that will allow you to stand up your own instance and only pay for the usage you need. It contains both the image manipulation API, as well as a client for building image URLs.
+It can be deployed as a self-contained Google App Engine app that will allow you to stand up your own instance and only pay for the usage you need. It can also be self-hosted. It contains both the image manipulation API, as well as a client for building image URLs.
 
-<h2>Installation</h2>
+<h2>App Engine Installation</h2>
 
 Simply [create a Google App Engine app](https://github.com/bluestatedigital/dynamite-images/wiki/Install) and deploy it, with your desired font files placed in the `fonts` folder and any local images contained in the `img` folder (these require the use of the `local=1` parameter to access).
 
@@ -18,7 +18,7 @@ In order to support uploads of files outside of the `img` folder (ie, to allow y
 The display/edit part of the code can be run locally or on a regular php server without GAE integration as long as the url parameter "local" is set to true on the image urls (i.e. `http://localhost:4007/BSD-logo.png?local=true&text=Using%20a%20local%20image%20from%20the%20/img/%20directory&max-width=400&white-space=normal&top=50&text-align=center` ) and the editor (i.e. `http://localhost:4007/edit.html?local=true&img=BSD-logo.png` ) and existing images in the local /img/ are referenced.
 
 <h2>API</h2>
-By default, the API works by passing parameters to an image's path. For example, if your app is `your-demo-app`, and you upload `banner.png`, your initial API endpoint will be `your-demo-app.appspot.com/banner.png` and `your-demo-app.appspot.com/banner.png?text=Example&top=100` would return an image with that text printed on it, 100 pixels from the top. You can specify the url parameters either manually, or use the client packaged at `/edit.html` to set the parameters and get the final link.
+By default, the API works simply by passing parameters to an image's path. For example, if your app is `your-demo-app`, and you upload `banner.png`, your initial API endpoint will be `your-demo-app.appspot.com/banner.png` and `your-demo-app.appspot.com/banner.png?text=Example&top=100` would return an image with that text printed on it, 100 pixels from the top. You can specify the url parameters either manually, or use the client packaged at `/edit.html` to set the parameters and get the final link.
 
 Where possible, the API's parameters follow CSS naming conventions, for familiarity and simplicity (this is just for convenience; the API is not real a CSS parser.)
 
