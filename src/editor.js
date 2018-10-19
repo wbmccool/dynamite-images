@@ -68,7 +68,8 @@
     }
     var revision = 0,
         timeout,
-
+        layers = [],
+        editlayer = 0,
         $body = $('body'),
         $layerControl = $body.find('#layers'),
         $form = $body.find("form"),
@@ -83,15 +84,10 @@
         $tsField = $body.find('[name="text-shadow"]'),
         $toControls = $body.find('.to-fields'),
         $toField = $body.find('[name="outline"]'),
-        $alertZone = $body.find('.alert-zone'),
         local = gup('local')==="true",
         layertabsHTML = '',
         get = decodeParam(location.search.replace('?','')),
         filetype = get.img && get.img.split('.')[1],
-        layers = [],
-        layerkey ='last-edited-layer-'+get.img,
-        sEditlayer = sessionStorage && parseInt(sessionStorage.getItem(layerkey),10),
-        editlayer = sEditlayer||0,
         defaultEditURL = '/edit.html?local=true&img=BSD-logo.png',
         defaults={
             'text-align':'',
@@ -110,7 +106,6 @@
             'text-shadow':'',
             'outline':''
         },
-        allowedKeys = _.keys(defaults).concat(['text']),
         mergedFieldDefaults = {
             'ts-left':0,
             'ts-top':0,
@@ -141,7 +136,7 @@
     function showUploadForm(){
         $preview.removeClass('loading');
         if(!local){
-            $preview.load('/upload.php #upload-form-col', function(resp, status, xhr){
+            $preview.load('/upload.php', function(resp, status, xhr){
 				if(status === "error"){
 					$preview.html("No image specified. <p><a href='/upload.php'>Please login as an admin to upload an image</a>.");
 				}
@@ -170,14 +165,12 @@
                 if(!array[extractedKey]){
                     array[extractedKey]={};
                 }
-                if(_.contains(allowedKeys,truekey)){//only allowed keys
-                    array[extractedKey][truekey] = v;
-                }
+                array[extractedKey][truekey] = v;
             }
         });
         return array;
     }
-console.log(allowedKeys);
+
 
     function setFormFromParams(startParams){
         var tstemp,
@@ -187,9 +180,6 @@ console.log(allowedKeys);
 
         if(startParams.color && startParams.color.indexOf('#')===-1){
             startParams.color = '#'+startParams.color;
-        }
-        if(startParams['white-space']==="normal"){
-            $form.find('[name="max-width"]').closest('.form-group').toggleClass('dim',false);
         }
 
         /*I think these are not properly clearing between layer switches: we may need a global way to reset defaults*/
@@ -233,19 +223,16 @@ console.log(allowedKeys);
             layertabsHTML = '';
 
         layers = layerSplit(decodeParam(hash));
-        editlayer = layers[editlayer] && editlayer||layers.length-1>0 && layers.length-1||0;
-        sessionStorage.setItem(layerkey,editlayer);
 
         //totally fresh defaults
         if(hash===""){
-            layers[0].left = 80;
-            layers[0].top = 80;
-            layers[0]['text-align']='';
+            layers[0].top = 100;
+            layers[0]['text-align']='center';
         }
 
         $layerControl.find('.layer-tab').remove();
         $.each(layers,function(i){
-            layertabsHTML += newLayerTab(i,editlayer);
+            layertabsHTML += newLayerTab(i,0);
         });
         $layerControl.prepend(layertabsHTML);
         $('#new-layer').toggle(layers.length < 7);
@@ -256,44 +243,23 @@ console.log(allowedKeys);
         return layers;
     }
 
-    function warn(msg){
-        var htmlstring = '<div class="alert alert-warning alert-dismissible fixed-alert" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Warning!</strong> '+msg+'</div>';
-        $alertZone.append(htmlstring);
-    }
-    window.warn = warn;
-
     function startup(){
 
         updateParamState();//get all the layers from the hash state
-        setFormFromParams(layers[editlayer]);//set all the form elements to match the first layer
+        setFormFromParams(layers[0]);//set all the form elements to match the first layer
+
+
 
         $form.on('change','[name="vertical-align"]',function(){
             //if centering vertically, reset the Y offset to 0
-            var val = $(this).val(),
-                $topField = $('[name="top"]'),
-                imgHeight = $preview.find('img').data('height');
-            if(val==="middle"){
-                $topField.val(imgHeight/2);
-            }
-            else if(val==="bottom"){
-                $topField.val(imgHeight);
-            }else{
-                $topField.val(0);
+            if($(this).val()==="middle"){
+                $('[name="top"]').val(0);
             }
         }).on('change','[name="text-align"]',function(){
             //if centering horizontally, reset the X offset to 0
-            var val = $(this).val(),
-            imgWidth = $preview.find('img').data('width');
-            if(val==="center"){
-                $('[name="left"]').val(Math.abs(imgWidth/2));
-            }
-            else if(val==="" || val==="right"){
+            if($(this).val()==="center" || $(this).val()==="right"){
                 $('[name="left"]').val(0);
             }
-        }).on('change','[name="white-space"]',function(){
-            //if centering horizontally, reset the X offset to 0
-            var val = $(this).val();
-            $form.find('[name="max-width"]').closest('.form-group').toggleClass('dim',val!=="normal");
         }).on("change init navigate", function(e){
 
             layers[editlayer] = $(this).find('[name]').filter(function(index, element) {
@@ -305,11 +271,11 @@ console.log(allowedKeys);
 
             layers = _.map(layers, function(v,i){
                 return _.pick(v,function(v,k){
-                    return k!=='local' && v !== "" && v !==defaults[k];
+                    return v !== "" && v !==defaults[k];
                 });
             });
 
-            var params = (get.local?'local=1':'') + (layers.length===1?
+            var params = (get.local?'local=true':'') + (layers.length===1?
                     '&'+$.param(_.omit(layers[0],'text')) :
                     _.reduce(layers, function(memo,v,i){
                         return memo +'&'+ ($.param(_.omit(v,'text')).replace(/\+/g,'%20').replace(/\=/g,'['+i+']='));
@@ -328,7 +294,6 @@ console.log(allowedKeys);
                 timer = _.now(),
                 img = new Image();
 
-            $alertZone.empty();
             $preview.addClass('loading');
             img.onerror = showUploadForm;
             img.onload = function(){
@@ -336,27 +301,16 @@ console.log(allowedKeys);
                     data = {
                         height:img.height,
                         width:img.width,
-                        generated_in: ((_.now()-timer))+'ms',
-                        url_character_length: img.src.length
+                        generated_in: ((_.now()-timer))+'ms'
                     };
                 $preview.removeClass('loading').html(img);
                 $(img).data(data).attr({'alt':revision,title:'Click to position the text layer absolutely'});
                 $data.html(JSON.stringify(data,undefined,1));
-                if(data.height>=1700){
-                    warn('Images longer than 1700 pixels are not recommended, as they may break in older email clients. Consider breaking your image into multiple images.');
-                }
             };
             img.src = src;
 
             $output.val(parseUrl(src).href.split('?')[0] + "?" + paramsUnencoded);
             $outputLink.attr('href',img.src).css({visibility:'visible',opacity:1});
-
-            if(img.src && img.src.length>=2118){
-                warn('The url string you\'ve created is longer than 2117 characters which exceeds what Google App Engine will allow (the image preview is very likely broken).  Consider breaking your image into multiple images.');
-
-            }else if(img.src && img.src.length>=1900){
-                warn('The url string you\'ve created is longer than 1900 characters which may start to break in older email clients. Consider breaking your image into multiple images.');
-            }
             revision++;
 
             if(e.type!=="navigate"){
@@ -377,25 +331,19 @@ console.log(allowedKeys);
             },800);
         });
 
-        $output.on('focus',function(){
-            var $el = $(this);
-            window.setTimeout (function(){
-                $el.select();
-            },20);
-        });//select all text in copy/paste target
+        $output.on('focus',function(){ this.select(); });//select all text in copy/paste target
 
         $preview.on('click','img',function(e){
             //if setting text position with a click, undo alignments first, then set offsets
             var offset = $(this).offset(),
                 $img = $preview.find('img'),
-                vd = {//virtual dimensions
+                vd = {
                     width:$img.width(),
                     height:$img.height()
                 },
-                rd = $img.data(),//real dimensions
+                rd = $img.data(),
                 left = e.pageX - offset.left,
-                top = e.pageY - offset.top,
-                alignment = $form.find('[name="text-align"]').val();
+                top = e.pageY - offset.top;
 
             if(vd.width !== rd.width){
                 left = left * (rd.width/vd.width);
@@ -403,17 +351,8 @@ console.log(allowedKeys);
             if(vd.height!== rd.height){
                 top = top * (rd.height/vd.height);
             }
-
-            if(alignment==="right"){
-                left = rd.width - left;
-            }
-            else if(alignment==="center"){
-                //$form.find('[name="text-align"]').val('').end();
-            }
-
-            $form
-                //.find('[name="text-align"]').val('').end()
-                //.find('[name="vertical-align"]').val('').end()
+            $form.find('[name="text-align"]').val('').end()
+                .find('[name="vertical-align"]').val('').end()
                 .find('[name="left"]').val(Math.round(left)).end()
                 .find('[name="top"]').val(Math.round(top))
                 .trigger('change');
@@ -452,7 +391,6 @@ console.log(allowedKeys);
             $layerControl.find('.active').removeClass('active');
             var $el = $(this).addClass('active');
             editlayer = parseFloat($el.data('layer'));
-            sessionStorage.setItem(layerkey,editlayer);
             setFormFromParams(layers[editlayer]);
         });
 
@@ -471,7 +409,7 @@ console.log(allowedKeys);
                 ),
                 $newLayer;
 
-            layers.push( _.pick(newlayer,_.keys(defaults)) );
+            layers.push(newlayer);
             editlayer = layers.length-1;
 
             $newLayer = $(newLayerTab(editlayer));
@@ -504,15 +442,10 @@ console.log(allowedKeys);
                 name = $el.attr('name');
 
                 if(name in defaults){
-                    $el.val(
-                        name==="top" && layers[editlayer]['vertical-align'] && layers[editlayer]['vertical-align']!==''?
-                            ($preview.find('img').data('height') / (layers[editlayer]['vertical-align']==="bottom"?1:2)):
-                            name==="left" && layers[editlayer]['text-align'] && layers[editlayer]['text-align']==='center'?
-                                Math.round($preview.find('img').data('width')/2):
-                                defaults[name]
-                    );
+                    $el.val(name==="top"?
+                        layers[editlayer]['font-size']||defaults['font-size']:
+                        defaults[name]);
                 }
-
                 else if(name in mergedFieldDefaults){
                     $el.val(mergedFieldDefaults[name]);
                 }

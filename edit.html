@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -34,7 +35,7 @@
           <div class="form-elements">
             <form>
             <div class="row">
-              <div class="form-group overflow-hidden">
+              <div class="form-group">
                 <label for="text">Text</label>
                 <textarea id="text" name="text" type="text" class="form-control" rows="2" placeholder="Enter text">Your Text Here</textarea>
               </div>
@@ -44,14 +45,14 @@
                <label for="left">X Offset</label>
                <span class="input-group">
                 <input id="left" name="left" type="number" class="form-control input-sm" value="0">
-                <span class="input-group-addon clearer" title="Reset to 0 or image center, depending on text-alignment setting"><i class="glyphicon glyphicon-remove"></i></span>
+                <span class="input-group-addon clearer" title="Reset to 0"><i class="glyphicon glyphicon-remove"></i></span>
                </span>
               </div>
               <div class="form-group third">
                <label for="top">Y Offset</label>
                <span class="input-group">
                 <input id="top" name="top" type="number" class="form-control input-sm" value="0">
-                <span class="input-group-addon clearer" title="Reset to 0, image middle, or image height, depending on vertical alignment setting"><i class="glyphicon glyphicon-remove"></i></span>
+                <span class="input-group-addon clearer" title="Reset to font-size"><i class="glyphicon glyphicon-remove"></i></span>
                </span>
               </div>
               <div class="form-group third">
@@ -80,10 +81,7 @@
                </div>
                <div class="form-group one-quarter">
                  <label for="color">Color</label>
-                 <span class="input-group">
                  <input id="color" name="color" type="color" class="form-control input-sm" value="#000000">
-                 <span class="input-group-addon clearer"><i class="glyphicon glyphicon-remove"></i></span>
-               </span>
                </div>
                </div>
                <div class="row">
@@ -91,9 +89,8 @@
                    <label for="text-transform">Capitalization</label>
                    <select id="text-transform" name="text-transform" class="form-control input-sm">
                        <option value="" selected>Normal</option>
-                       <option value="uppercase">UPPERCASE</option>
+                       <option value="uppercase">Uppercase</option>
                        <option value="capitalize">Capitalize</option>
-                       <option value="lowercase">lowercase</option>
                    </select>
                  </div>
                  <div class="form-group third">
@@ -128,10 +125,10 @@
                      <span class="input-group-addon clearer" title="Reset to 1.5"><i class="glyphicon glyphicon-remove"></i></span>
                  </span>
                  </div>
-                 <div class="form-group third dim">
+                 <div class="form-group third">
                    <label for="max-width" title="(0 = use image edges)">Max Width</label>
                    <span class="input-group">
-                   <input id="max-width" title="Restricts the total size of the text block. Using 0 defaults to wrapping at the edges of the image." name="max-width" type="number" min="0" step="10" class="form-control input-sm" value="0">
+                   <input id="max-width" title="Restricts the total size of the text block. Using 0 defaults to wrapping at the edges of the image." name="max-width" type="number" min="0" step="50" class="form-control input-sm" value="0">
                       <span class="input-group-addon clearer" title="Reset to none (0)"><i class="glyphicon glyphicon-remove"></i></span>
                  </span>
                  </div>
@@ -172,7 +169,6 @@
               </div>
           </div>
       </div>
-      <div class="alert-zone"></div>
 <!--[if lte IE 8]><script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script><![endif]-->
 <!--[if gt IE 8]><!--><script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script><!--<![endif]-->
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
