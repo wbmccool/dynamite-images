@@ -5,13 +5,13 @@ default_expiration: 1m
 
 
 skip_files:
+- ^(.*/)?.*/node_modules/.*$
 - ^(.*/)?#.*#$
 - ^(.*/)?.*~$
 - ^(.*/)?.*\.py[co]$
 - ^(.*/)?.*/RCS/.*$
 - ^(.*/)?\..*$
 - ^(.*/)?.*/gulpfile.js$
-- ^(.*/)?.*/node_modules/.*$
 - ^(.*/)?.*/scss/.*$
 - ^(.*/)?.*/src/.*$
 
