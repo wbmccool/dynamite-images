@@ -1,23 +1,24 @@
-<?
-function getParam($string, $fallback){
-    if(isset($string) && isset($_GET[$string])){
+<?php
+
+function getParam($string, $fallback)
+{
+    if (isset($string) && isset($_GET[$string])) {
         return $_GET[$string];
-    }
-    elseif(isset($fallback)){
+    } elseif (isset($fallback)) {
         return $fallback;
-    }else {
+    } else {
         return '';
     }
 }
 
-function getParamAsArray($string, $fallback){
-    if(isset($string) && isset($_GET[$string]) && $_GET[$string]!=""){
+function getParamAsArray($string, $fallback)
+{
+    if (isset($string) && isset($_GET[$string]) && $_GET[$string]!="") {
         $string = $_GET[$string];
         return is_array($string) ? $string : array($string);
-    }else{
+    } else {
         return array($fallback);
     }
 }
-
 
 ?>

@@ -1,7 +1,9 @@
 <?php
-require_once('functions/write-text-w-letter-tracking.php');
+require_once 'functions/write-text-w-letter-tracking.php';
+require_once 'I18N/Arabic.php';
 
-function writeTextGroup($image, $image_width, $image_height, $params){
+function writeTextGroup($image, $image_width, $image_height, $params)
+{
 
     // Path to our ttf font file
     $font_file = './fonts/'.$params['font-family'].'.ttf';
@@ -20,6 +22,17 @@ function writeTextGroup($image, $image_width, $image_height, $params){
     if ($params['vertical-align'] == "bottom"){
         $params['top'] = bottomalignText($image, $params['font-size'], $font_file, $params['text'], $image_height, $params['top']);
     }
+
+    // sort out any Arabic Character issues
+    $Arabic = new I18N_Arabic('Glyphs');
+
+    // echo($text);
+    // syslog(LOG_INFO, "Before:");
+    // syslog(LOG_INFO, $params['text']);
+    // syslog(LOG_INFO, "After:");
+
+    $params['text'] = $Arabic->utf8Glyphs($params['text']);
+    // syslog(LOG_INFO, $params['text']);
 
     /*write the text*/
     if($params['white-space']=="normal"){
