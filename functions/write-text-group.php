@@ -1,13 +1,16 @@
 <?php
 require_once 'functions/write-text-w-letter-tracking.php';
-require_once 'I18N/Arabic.php';
+
 
 function writeTextGroup($image, $image_width, $image_height, $params)
 {
 
+
     // Path to our ttf font file
     $font_file = './fonts/'.$params['font-family'].'.ttf';
     $color = hexColorAllocate($image, $params['color']);
+
+
 
     if($params['text-transform']=="uppercase") {
         $params['text'] = strtoupper($params['text']);
@@ -23,16 +26,19 @@ function writeTextGroup($image, $image_width, $image_height, $params)
         $params['top'] = bottomalignText($image, $params['font-size'], $font_file, $params['text'], $image_height, $params['top']);
     }
 
-    // sort out any Arabic Character issues
-    $Arabic = new I18N_Arabic('Glyphs');
+    // sort out any Arabic Character glyph issues
+    // These fonts get special handling to ensure their glyphs are rendered correctly.
+    $arabic_fonts = ["DroidKufi-Bold.ttf", "DroidKuf-Regular.ttf", "terafik.ttf"];
+   
+    syslog(LOG_INFO, $params['text']);    
+    if (in_array(basename($font_file), $arabic_fonts)){
+        include_once 'I18N/Arabic.php';
 
-    // echo($text);
-    // syslog(LOG_INFO, "Before:");
-    // syslog(LOG_INFO, $params['text']);
-    // syslog(LOG_INFO, "After:");
+        $Arabic = new I18N_Arabic('Glyphs');
 
-    $params['text'] = $Arabic->utf8Glyphs($params['text']);
-    // syslog(LOG_INFO, $params['text']);
+        $params['text'] = $Arabic->utf8Glyphs($params['text']);
+        syslog(LOG_INFO, $params['text']);
+    }
 
     /*write the text*/
     if($params['white-space']=="normal") {
