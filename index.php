@@ -9,6 +9,10 @@ require 'functions/text-alignment.php';
 require 'functions/write-text-line.php';
 require 'functions/write-text-group.php';
 
+include_once 'I18N/Arabic.php';
+$Arabic = new I18N_Arabic('Glyphs');
+
+
 $file_name = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 
 /*if it looks like someone is just hitting this file directly, redirect to the editor*/

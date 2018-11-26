@@ -3,7 +3,7 @@ require_once 'functions/write-text-w-letter-tracking.php';
 
 function writeTextGroup($image, $image_width, $image_height, $params)
 {
-
+    global $Arabic;
     // Path to our ttf font file
     $font_file = './fonts/' . $params['font-family'] . '.ttf';
     $color = hexColorAllocate($image, $params['color']);
@@ -28,8 +28,7 @@ function writeTextGroup($image, $image_width, $image_height, $params)
 
     syslog(LOG_INFO, $params['text']);
     if (in_array(basename($font_file), $arabic_fonts)) {
-        include_once 'I18N/Arabic.php';
-        $Arabic = new I18N_Arabic('Glyphs');
+
         $params['text'] = $Arabic->utf8Glyphs($params['text']);
         $is_rtl = true;
     }
