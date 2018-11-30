@@ -1,9 +1,15 @@
 # Dynamite Images
 🎨⚡📝
 
+
+
+
 Dynamite Images is a project that allows you to dynamically pass styled, personalized text directly into images for use in personalized materials like emails.
 
 It is a self-contained Google App Engine app that will allow you to stand up your own instance and only pay for the usage you need. It contains both the image manipulation API, as well as a client for building image URLs.
+
+<h2>A note on repository structure </h2>
+The branch `appengine-v1` is the production codebase currently deployed to the `dynamite-images` and `unicef-images` appengine projects.  `Master` contains several updates to the text layout which are still not fully tested with existing implementations for backwards compatiblity.  New feature branches should be created off the `appengine-v1` branch.
 
 <h2>Installation</h2>
 
