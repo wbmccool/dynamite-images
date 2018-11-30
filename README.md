@@ -5,6 +5,10 @@ Dynamite Images is a project that allows you to dynamically pass styled, persona
 
 It can be deployed as a self-contained Google App Engine app that will allow you to stand up your own instance and only pay for the usage you need. It can also be self-hosted. It contains both the image manipulation API, as well as a client for building image URLs.
 
+<h2>A note on repository structure </h2>
+The branch `appengine-v1` is the production codebase currently deployed to the `dynamite-images` and `unicef-images` appengine projects.  `Master` contains several updates to the text layout which are still not fully tested with existing implementations for backwards compatiblity.  New feature branches should be created off the `appengine-v1` branch.
+
+
 <h2>App Engine Installation</h2>
 
 Simply [create a Google App Engine app](https://github.com/bluestatedigital/dynamite-images/wiki/Install) and deploy it, with your desired font files placed in the `fonts` folder and any local images contained in the `img` folder (these require the use of the `local=1` parameter to access).
